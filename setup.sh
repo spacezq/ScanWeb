@@ -6,12 +6,10 @@ set -euo pipefail
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 
-# Function to print log messages
 log() {
     echo "[+] $1"
 }
 
-# Function to print error message and exit
 error_exit() {
     echo "[ERROR] $1" >&2
     exit 1
@@ -21,7 +19,7 @@ log "Updating system packages..."
 sudo apt update && sudo apt upgrade -y
 
 log "Installing dependencies..."
-sudo apt install -y git curl wget parallel unzip dos2unix gccgo-go golang-go
+sudo apt install -y git curl wget parallel unzip dos2unix golang-go
 
 # Function to install Go-based tools if not already installed
 install_go_tool() {
