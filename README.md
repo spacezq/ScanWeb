@@ -1,4 +1,4 @@
-# Auto_scanweb
+# ScanWeb
 
 Auto_scanweb is an automated web domain enumeration and vulnerability scanning script. It performs passive reconnaissance, subdomain enumeration, live domain detection, vulnerability scanning, and sends data to Burp Suite for further manual testing.
 
@@ -13,8 +13,8 @@ Auto_scanweb is an automated web domain enumeration and vulnerability scanning s
 To get started with Auto_scanweb, clone the repository and navigate to the project directory:
 
 ```bash
-git clone https://github.com/spacezq/Auto_scanweb.git
-cd Auto_scanweb
+git clone https://github.com/spacezq/ScanWeb.git
+cd ScanWeb
 sudo apt install dos2unix
 ```
 Automated Setup
