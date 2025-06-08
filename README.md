@@ -1,63 +1,125 @@
 # ScanWeb
 
-Auto_scanweb is an automated web domain enumeration and vulnerability scanning script. It performs passive reconnaissance, subdomain enumeration, live domain detection, vulnerability scanning, and sends data to Burp Suite for further manual testing.
+ScanWeb is an automated web domain enumeration and vulnerability scanning tool. It performs passive reconnaissance, subdomain enumeration, live domain detection, vulnerability scanning with customizable templates, and exports data to Burp Suite for further manual testing.
+
+---
 
 ## Table of Contents
+
+- [Features](#features)
 - [Installation](#installation)
 - [Setup](#setup)
 - [Usage](#usage)
 - [Tools Used](#tools-used)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## Features
+
+- Passive subdomain enumeration using multiple popular tools  
+- Live domain detection with fast HTTP probing  
+- URL crawling and parameter extraction  
+- Vulnerability scanning using Nuclei with template support  
+- Directory fuzzing with FFUF  
+- Automatic export of discovered URLs to Burp Suite proxy  
+- Modular design for easy updates and customization  
+
+---
 
 ## Installation
 
-To get started with Auto_scanweb, clone the repository and navigate to the project directory:
+Clone the repository and navigate to the project directory:
 
-```bash
+```
 git clone https://github.com/spacezq/ScanWeb.git
 cd ScanWeb
 sudo apt install dos2unix
 ```
-Automated Setup
-Alternatively, you can use the provided setup.sh script to automate the installation process for the required tools:
 
-Run the conversion command on the setup.sh file:
+---
 
-```bash
-dos2unix setup.sh
+## Setup
+
+To automate the installation of required tools, run the setup script:
+
 ```
-
-```bash
+dos2unix setup.sh
 chmod +x setup.sh
 ./setup.sh
 ```
-This script will install the necessary tools on a Kali Linux or Ubuntu system.
 
-Usage
-To run the Auto_scanweb script, use the following command:
+This will install all necessary dependencies and tools on Kali Linux, Ubuntu, or similar Debian-based systems.
 
-```bash
-./auto.sh <domain>
+---
+
+## Usage
+
+Run the main scanning script with the target domain as argument:
+
 ```
-Replace <domain> with the target domain you want to scan. The script will perform the following actions:
+./auto.sh 
+```
 
-Passive Enumeration: Subdomain enumeration using multiple tools.
-Vulnerability Scanning: Scan live domains and identified parameters using Nuclei.
-Data Export to Burp Suite: Sends all discovered URLs to Burp Suite for further manual testing.
+Replace `` with the target domain you want to scan.
+
+The script will perform:
+
+1. Passive subdomain enumeration  
+2. Live domain detection  
+3. URL crawling and parameter extraction  
+4. Vulnerability scanning with Nuclei and directory fuzzing with FFUF  
+5. Sending discovered URLs to Burp Suite proxy for further manual testing  
+
+Results will be saved in folders under the target domain directory.
+
 Example:
-```bash
+
+```
 ./auto.sh example.com
 ```
-The results will be saved in the respective folders created under the domain's directory.
 
-Tools Used
-Auto_scanweb utilizes the following tools for domain enumeration and scanning:
-Subfinder: Fast passive subdomain enumeration tool.
-Assetfinder: Another tool for finding subdomains.
-Findomain: High-performance subdomain finder.
-Amass: OWASP Amass performs network mapping of attack surfaces and external asset discovery using open source information gathering and active reconnaissance techniques.
-Httpx: Fast and multi-purpose HTTP toolkit.
-Waymore: A powerful crawler that extracts URLs and parameters.
-Katana: Web crawling tool with parameter extraction.
-Nuclei: Fast, customizable vulnerability scanner based on template files.
-Ffuf: Fuzzing tool for discovering directories, files, and parameters.
-GNU Parallel: Utility for executing jobs in parallel.
+---
+
+## Tools Used
+
+- **Subfinder**: Passive subdomain enumeration  
+- **Assetfinder**: Subdomain discovery tool  
+- **Findomain**: Fast subdomain finder  
+- **Amass**: Comprehensive attack surface mapping  
+- **Httpx**: HTTP probing for live domain detection  
+- **Waymore**: URL and parameter extraction crawler  
+- **Katana**: Web crawler with parameter extraction  
+- **Nuclei**: Template-based vulnerability scanner  
+- **FFUF**: HTTP fuzzer for directories and parameters  
+- **GNU Parallel**: Parallel execution utility  
+- **Qsreplace**: URL parameter manipulation tool  
+
+---
+
+## Contributing
+
+Contributions are welcome! Please open issues or pull requests to improve features or fix bugs.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+---
+
+
+
+[1] https://github.com/spacezq/ScanWeb.git
+[2] https://github.com/TermuxHackz/WebScan
+[3] https://github.com/spark1security/n0s1
+[4] https://pentest-tools.com/information-gathering/find-subdomains-of-domain
+[5] https://github.com/mgriit/ScanAppForWeb
+[6] https://help.hcl-software.com/appscan/ASoC/src_run_scan_wizard_github.html
+[7] https://github.com/GovernIB/pluginsib-scanweb/actions
+[8] https://github.com/GovernIB/pluginsib-scanweb/milestone/2
+[9] https://docs.solidityscan.com/project/
+[10] https://enlacehacktivista.org/index.php/Scanning_and_Recon
+[11] https://github.com/capture0x/web-scanner
