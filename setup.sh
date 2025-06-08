@@ -1,68 +1,76 @@
 #!/bin/bash
 
-# Update system
-echo "[+] Updating system packages..."
+set -euo pipefail
+
+# Set Go environment variables
+export GOPATH="$HOME/go"
+export PATH="$PATH:$GOPATH/bin"
+
+# Function to print log messages
+log() {
+    echo "[+] $1"
+}
+
+# Function to print error message and exit
+error_exit() {
+    echo "[ERROR] $1" >&2
+    exit 1
+}
+
+log "Updating system packages..."
 sudo apt update && sudo apt upgrade -y
 
-# Install dependencies
-echo "[+] Installing dependencies..."
-sudo apt install -y git curl wget parallel
+log "Installing dependencies..."
+sudo apt install -y git curl wget parallel unzip dos2unix gccgo-go golang-go
 
-# Install Go (required for subfinder, assetfinder, and others)
-sudo apt install gccgo-go -y
-sudo apt install golang-go -y
-sudo apt-get install dos2unix
+# Function to install Go-based tools if not already installed
+install_go_tool() {
+    local pkg=$1
+    local bin_name=$2
 
-# Install Subfinder
-echo "[+] Installing Subfinder..."
-sudo apt install subfinder
+    if ! command -v "$bin_name" &> /dev/null; then
+        log "Installing $bin_name..."
+        go install -v "$pkg@latest"
+        cp "$GOPATH/bin/$bin_name" /usr/local/bin/
+    else
+        log "$bin_name already installed."
+    fi
+}
 
-# Install Assetfinder
-echo "[+] Installing Assetfinder..."
-sudo apt install assetfinder
+# Function to install tools available via apt package manager
+install_apt_tool() {
+    local tool=$1
+    if ! command -v "$tool" &> /dev/null; then
+        log "Installing $tool via apt..."
+        sudo apt install -y "$tool"
+    else
+        log "$tool already installed."
+    fi
+}
 
-# Install Findomain
-echo "[+] Installing Findomain..."
-curl -LO https://github.com/findomain/findomain/releases/latest/download/findomain-linux.zip
-unzip findomain-linux.zip
-chmod +x findomain
-sudo mv findomain /usr/bin/findomain
+# Install tools via apt
+install_apt_tool subfinder
+install_apt_tool assetfinder
+install_apt_tool amass
+install_apt_tool waymore
 
-# Install Amass
-echo "[+] Installing Amass..."
-sudo apt install amass -y
+# Install Findomain if not installed
+if ! command -v findomain &> /dev/null; then
+    log "Installing Findomain..."
+    curl -LO https://github.com/findomain/findomain/releases/latest/download/findomain-linux.zip
+    unzip findomain-linux.zip
+    chmod +x findomain
+    sudo mv findomain /usr/local/bin/
+    rm findomain-linux.zip
+else
+    log "Findomain already installed."
+fi
 
-# Install httpx
-echo "[+] Installing httpx..."
-go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
-sudo cp ~/go/bin/httpx /usr/local/bin/
+# Install Go tools
+install_go_tool github.com/projectdiscovery/httpx/cmd/httpx httpx
+install_go_tool github.com/projectdiscovery/katana/cmd/katana katana
+install_go_tool github.com/projectdiscovery/nuclei/v2/cmd/nuclei nuclei
+install_go_tool github.com/ffuf/ffuf ffuf
+install_go_tool github.com/tomnomnom/qsreplace qsreplace
 
-# Install Waymore
-echo "[+] Installing Waymore..."
-sudo apt install waymore
-
-# Install Katana
-echo "[+] Installing Katana..."
-go install -v github.com/projectdiscovery/katana/cmd/katana@latest
-sudo cp ~/go/bin/katana /usr/local/bin/
-
-# Install Nuclei
-echo "[+] Installing Nuclei..."
-go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest
-sudo cp ~/go/bin/nuclei /usr/local/bin/
-
-# Install FFUF
-echo "[+] Installing FFUF..."
-go install -v github.com/ffuf/ffuf@latest
-sudo cp ~/go/bin/ffuf /usr/local/bin/
-
-# Install qsreplace (optional)
-echo "[+] Installing qsreplace..."
-go install -v github.com/tomnomnom/qsreplace@latest
-sudo cp ~/go/bin/qsreplace /usr/local/bin/
-
-# Make sure tools are up to date
-echo "[+] Ensuring all tools are updated..."
-go get -u all
-
-echo "[+] All tools installed successfully!"
+log "All tools installed or already present."
