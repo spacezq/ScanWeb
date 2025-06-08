@@ -97,7 +97,7 @@ scanner() {
 send_to_burp() {
     log "Sending data to Burp Suite for further testing..."
 
-    # Check if Burp Suite proxy is running
+    # Check if Burp Suite proxy is running on localhost:8080
     if nc -zv 127.0.0.1 8080 &> /dev/null; then
         cat "$domain/sources/parameters_with_equal.txt" "$domain/sources/waymore-katana-unfilter-urls.txt" "$domain/sources/waymore-katana-filter-urls.txt" | \
         parallel -j 10 'curl --proxy http://127.0.0.1:8080 -sk {}' > /dev/null
@@ -106,7 +106,6 @@ send_to_burp() {
     fi
 }
 
-# Main function to orchestrate the steps
 main() {
     check_tools
     domain_enum
